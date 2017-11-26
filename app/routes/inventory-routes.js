@@ -37,9 +37,22 @@ module.exports = function(app, db) {
 
     app.post('/inventory', (req, res) => {
         let errors = [];
-        if(!req.body.inventoryId) {
-            errors.push('Inventory Id Is Required');
+        let partId = null;
+        // A parent part id is required for inventory quantities to be added
+        if(!req.body.partId) {
+            errors.push('Part Id Is Required');
+        } else {
+            partId = Number(req.body.partId);
+            const part = db.inventory.findOne(partId);
+            if(!part) {
+                errors.push('Part Id \'' + partId + '\' does not exist.');
+            }
         }
+
+        if(!req.body.quantity) {
+            errors.push('Quantity is required.');
+        }
+
         // Get an id that is one greater than collection size
         const id = db.inventory.count() + 1;
         if(errors.length > 0) {
