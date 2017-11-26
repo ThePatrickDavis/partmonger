@@ -82,7 +82,7 @@ Postman-Token: ef791439-a1b9-b580-5b1d-7a592851c119
 Update a Part
 
 ```
-POST /parts/1 HTTP/1.1
+PUT /parts/1 HTTP/1.1
 Host: localhost:9001
 Content-Type: application/json
 Cache-Control: no-cache
