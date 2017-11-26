@@ -54,7 +54,7 @@ Why?
 
 ## Authors
 
-* **BPatrick Davis** - *Initial work* - [ThePatrickDavis](https://github.com/ThePatrickDavis)
+* **Patrick Davis** - *Initial work* - [ThePatrickDavis](https://github.com/ThePatrickDavis)
 
 ## License
 
