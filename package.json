@@ -1,0 +1,22 @@
+{
+  "name": "partmonger",
+  "version": "1.0.0",
+  "description": "Basic Parts API",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "partcart"
+  },
+  "author": "Patrick Davis",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "diskdb": "^0.1.17",
+    "express": "^4.16.2",
+    "nodemon": "^1.12.1"
+  }
+}
