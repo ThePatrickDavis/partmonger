@@ -36,6 +36,79 @@ The server should not be running on port 9001. You can test that it is working b
 http://localhost:9001/parts
 ```
 
+### Calling the API
+
+A tool such as postman is recommended to test API Calls.
+
+Create a Part
+
+```
+POST /parts HTTP/1.1
+Host: localhost:9001
+Content-Type: application/json
+Cache-Control: no-cache
+Postman-Token: fb4ded7b-6fe6-1310-c23e-8760d8db38ea
+
+{
+	"partNumber": "12345",
+	"name": "Test Part Number",
+	"description": "Description goes here.",
+	"cost": 1.00,
+	"image": "http://localhost:9001/images/myimage.jpg"
+}
+```
+
+Get All Parts
+
+```
+GET /parts HTTP/1.1
+Host: localhost:9001
+Content-Type: application/json
+Cache-Control: no-cache
+Postman-Token: 76855dc7-0fa6-6395-311c-a0a9c179d7a1
+```
+
+Get a Single Part
+
+```
+GET /parts/1 HTTP/1.1
+Host: localhost:9001
+Content-Type: application/json
+Cache-Control: no-cache
+Postman-Token: ef791439-a1b9-b580-5b1d-7a592851c119
+```
+
+
+Update a Part
+
+```
+POST /parts/1 HTTP/1.1
+Host: localhost:9001
+Content-Type: application/json
+Cache-Control: no-cache
+Postman-Token: cee4b798-bd4e-5c69-08a2-4013d3e0486c
+
+{
+	"partNumber": "12345",
+	"name": "Test Part Number",
+	"description": "Description goes here.",
+	"cost": 1.00,
+	"image": "http://localhost:9001/images/myimage.jpg"
+}
+```
+
+(Soft) Delete a Part
+
+```
+DELETE /parts/2 HTTP/1.1
+Host: localhost:9001
+Content-Type: application/json
+Cache-Control: no-cache
+Postman-Token: a7442291-b83b-533a-307f-aef7cf9ea61d
+
+
+```
+
 ## Running the tests
 
 Coming Soon.
