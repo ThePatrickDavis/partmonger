@@ -71,7 +71,8 @@ module.exports = function(app, db) {
                 partNumber: req.body.partNumber,
                 description: req.body.description,
                 isActive: true,
-                image: req.body.image };
+                image: req.body.image,
+                name: req.body.name };
 
             db.parts.save(part);
             res.send(part);
@@ -118,6 +119,7 @@ module.exports = function(app, db) {
             part.partNumber = req.body.partNumber;
             part.description = req.body.description;
             part.cost = Number(req.body.cost);
+            part.name = req.body.name;
             db.parts.update(query, part, options);
             res.send(part);
         }
