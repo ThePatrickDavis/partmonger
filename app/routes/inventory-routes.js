@@ -25,6 +25,15 @@ module.exports = function(app, db) {
         res.send(inventory);
     });
 
+    /*
+        Get all inventory for a part with specified id
+    */
+    app.get('/parts/:id/inventory', (req, res) => {
+        const partId = Number(req.params.id);
+        const inventory = db.inventory.find({isActive: true, partId: partId});
+        res.send(inventory);
+    });
+
     app.get('/inventory/:id', (req, res) => {
         const id = req.params.id;
         const inventory = db.inventory.findOne({id: Number(id)});
@@ -43,7 +52,7 @@ module.exports = function(app, db) {
             errors.push('Part Id Is Required');
         } else {
             partId = Number(req.body.partId);
-            const part = db.inventory.findOne(partId);
+            const part = db.parts.findOne({id: partId});
             if(!part) {
                 errors.push('Part Id \'' + partId + '\' does not exist.');
             }
@@ -60,8 +69,9 @@ module.exports = function(app, db) {
         } else {
             const inventory = {
                 id: id,
-                inventoryId: Number(req.body.inventoryId),
+                partId: Number(req.body.partId),
                 quantity: Number(req.body.quantity),
+                serialNumber: req.body.serialNumber,
                 isActive: true };
 
             db.inventory.save(inventory);
