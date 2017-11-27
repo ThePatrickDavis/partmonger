@@ -21,7 +21,17 @@ module.exports = function(app, db) {
     });
 
     app.get('/parts', (req, res) => {
-        const parts = db.parts.find({isActive: true});
+        let parts = db.parts.find({isActive: true});
+        // Apply in memroy searching, disk db does not support OR operations
+        if(req.query.search) {
+            const search = req.query.search;
+            parts = parts.filter((part) => {
+                return (part.description && part.description.includes(search)) ||
+                    (part.name && part.name.includes(search)) ||
+                    (part.partNumber && part.partNumber.includes(search));
+            });
+        }
+
         res.send(parts);
     });
 
