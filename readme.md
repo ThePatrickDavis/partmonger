@@ -109,6 +109,34 @@ Postman-Token: a7442291-b83b-533a-307f-aef7cf9ea61d
 
 ```
 
+Receive a part
+
+```
+PUT /parts/1/receive HTTP/1.1
+Host: localhost:9001
+Content-Type: application/json
+Cache-Control: no-cache
+Postman-Token: 4422fa41-32ac-cac9-1906-159f80564dd4
+
+{
+	"quantity": 1
+}
+```
+
+Consume a part
+
+```
+PUT /parts/1/consume HTTP/1.1
+Host: localhost:9001
+Content-Type: application/json
+Cache-Control: no-cache
+Postman-Token: 9b4e5abc-588a-436e-fe09-689381215217
+
+{
+	"quantity": 1
+}
+```
+
 ## Running the tests
 
 Coming Soon.

@@ -124,4 +124,84 @@ module.exports = function(app, db) {
             res.send(part);
         }
     });
+
+    app.put('/parts/:id/receive', (req, res) => {
+        const id = req.params.id;
+        let part = null;
+        let errors = [];
+        let newStock = null;
+        if(!id) {
+            errors.push('Id is required.');
+        }   else {
+            part = db.parts.findOne({id: Number(id)});
+            if(!part) {
+                errors.push('No part with id \'' + id + '\' exists');
+                res.status(400).send({errors: errors});
+            }
+        }
+
+        if(!req.body.quantity) {
+            errors.push('Quantity Is Required');
+        } else {
+            newStock = part.inStock + Number(req.body.quantity);
+        }
+
+        if(errors.length > 0) {
+            res.status(400).send({errors: errors});
+        } else {
+            const query = {
+                id: Number(id)
+            };
+
+            var options = {
+                multi: false,
+                upsert: false
+             };
+
+            db.parts.update(query, {inStock: newStock}, options);
+            part.inStock = newStock;
+            // Return full part with new in stock quantity
+            res.send(part);
+        }
+    });
+
+    app.put('/parts/:id/consume', (req, res) => {
+        const id = req.params.id;
+        let part = null;
+        let errors = [];
+        let newStock = null;
+        if(!id) {
+            errors.push('Id is required.');
+        }   else {
+            part = db.parts.findOne({id: Number(id)});
+            if(!part) {
+                errors.push('No part with id \'' + id + '\' exists');
+                res.status(400).send({errors: errors});
+            }
+        }
+
+        if(!req.body.quantity) {
+            errors.push('Quantity Is Required');
+        } else {
+            newStock = part.inStock - Number(req.body.quantity);
+        }
+
+        if(errors.length > 0) {
+            res.status(400).send({errors: errors});
+        } else {
+            const query = {
+                id: Number(id)
+            };
+
+            var options = {
+                multi: false,
+                upsert: false
+             };
+
+            db.parts.update(query, {inStock: newStock}, options);
+            part.inStock = newStock;
+            // Return full part with new in stock quantity
+            res.send(part);
+        }
+    });
 };
