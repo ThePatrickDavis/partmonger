@@ -46,6 +46,12 @@ You should now see that the server is live and listening on port 9001. You can t
 http://localhost:9001/parts
 ```
 
+### Documentation
+
+When the server is running you can visit `/docs` to view generated documentation regarding the endpoints that can be called. This provides the routes, parameters, response signatures, and descriptions of each endpoint.
+
+`http://localhost:9001/docs`
+
 ### Calling the API
 
 A tool such as postman is recommended to test API Calls.

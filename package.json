@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
+    "prestart": "echo \"Documentation available @ http://localhost:9001/docs\"",
     "test": "test"
   },
   "repository": {
@@ -19,5 +20,11 @@
     "diskdb": "^0.1.17",
     "express": "^4.16.2",
     "nodemon": "^1.12.1"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.5.5",
+    "path": "^0.12.7",
+    "redoc": "^2.0.0-alpha.37",
+    "swagger-jsdoc": "^3.0.2"
   }
 }

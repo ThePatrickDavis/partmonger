@@ -1,4 +1,38 @@
+const path = require('path');
+const swaggerJSDoc = require('swagger-jsdoc');
+
 module.exports = function(app, db) {
+
+    // -- setup up swagger-jsdoc --
+    const swaggerDefinition = {
+        info: {
+        title: 'Partmonger',
+        version: '1.0.0',
+        description: 'Simple Express based NodeJS API that mocks an inventory backend.',
+        },
+        host: 'localhost:9001',
+        basePath: '/',
+    };
+
+    const options = {
+        swaggerDefinition,
+        apis: [path.resolve('app/routes/part-routes.js')],
+    };
+
+    const swaggerSpec = swaggerJSDoc(options);
+
+    // -- routes for docs and generated swagger spec --
+    app.get('/swagger.json', (req, res) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(swaggerSpec);
+    });
+
+    app.get('/docs', (req, res) => {
+        // const pathToDocs = path.resolve('redoc.html');
+        // res.sendFile(path.join(__dirname, 'redoc.html'));
+        res.sendFile(path.resolve('docs/redoc.html'));
+    });
+
     app.delete('/parts/:id', (req, res) => {
         const id = req.params.id;
         const part = db.parts.findOne({id: Number(id)});
@@ -20,6 +54,43 @@ module.exports = function(app, db) {
         }
     });
 
+    /**
+     * @swagger
+     * /parts?search={search}:
+     *   get:
+     *     summary: Get parts
+     *     parameters:
+     *      - in: query
+     *        name: search
+     *        schema:
+     *          type: string
+     *     responses:
+     *       200:
+     *         description: Returns a list of active parts that match the search terms.
+     *         schema:
+     *           type: array
+     *           items: 
+     *              type: object
+     *              properties:
+     *                  id:
+     *                      type: integer
+     *                  cost:
+     *                      type: integer
+     *                  partNumber: 
+     *                      type: string
+     *                  description:
+     *                      type: string
+     *                  name:
+     *                      type: string
+     *                  notes:
+     *                      type: string
+     *                  inStock:
+     *                      type: boolean
+     *                  image:
+     *                      type: object
+     *                  isActive:
+     *                      type: boolean             
+     */
     app.get('/parts', (req, res) => {
         let parts = db.parts.find({isActive: true});
         // Apply in memroy searching, disk db does not support OR operations
@@ -35,6 +106,44 @@ module.exports = function(app, db) {
         res.send(parts);
     });
 
+    /**
+     * @swagger
+     * /parts/{id}:
+     *   get:
+     *     summary: Get a part
+     *     description: Fetch a part by ID
+     *     parameters:
+     *      - in: path
+     *        name: id
+     *        schema:
+     *          type: integer
+     *        required: true
+     *        description: Numeric ID of the part to get
+     *     responses:
+     *       200:
+     *         description: Returns a part if one exists with the specified ID.
+     *         schema:
+     *           type: object
+     *           properties:
+     *              id:
+     *                  type: integer
+     *              cost:
+     *                  type: integer
+     *              partNumber: 
+     *                  type: string
+     *              description:
+     *                  type: string
+     *              name:
+     *                  type: string
+     *              notes:
+     *                  type: string
+     *              inStock:
+     *                  type: boolean
+     *              image:
+     *                  type: object
+     *              isActive:
+     *                  type: boolean
+     */
     app.get('/parts/:id', (req, res) => {
         const id = req.params.id;
         const part = db.parts.findOne({id: Number(id)});
@@ -45,6 +154,64 @@ module.exports = function(app, db) {
         }
     });
 
+
+    /**
+     * @swagger
+     * /parts:
+     *   post:
+     *     summary: Create a part
+     *     description: Creates a new part using the parameters provided.
+     *     requestBody:
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             properties:
+     *                  cost:
+     *                      type: integer
+     *                      required: true
+     *                  partNumber: 
+     *                      type: string
+     *                      required: true
+     *                  description:
+     *                      type: string
+     *                      required: true
+     *                  name:
+     *                      type: string
+     *                      required: true
+     *                  notes:
+     *                      type: string
+     *                  inStock:
+     *                      type: boolean
+     *                  image:
+     *                      type: object
+     *                  isActive:
+     *                      type: boolean
+     *     responses:
+     *       200:
+     *         description: Returns a part if one exists with the specified ID.
+     *         schema:
+     *           type: object
+     *           properties:
+     *              id:
+     *                  type: integer
+     *              cost:
+     *                  type: integer
+     *              partNumber: 
+     *                  type: string
+     *              description:
+     *                  type: string
+     *              name:
+     *                  type: string
+     *              notes:
+     *                  type: string
+     *              inStock:
+     *                  type: boolean
+     *              image:
+     *                  type: object
+     *              isActive:
+     *                  type: boolean
+     */
     app.post('/parts', (req, res) => {
         let errors = [];
         if(!req.body.partNumber) {
@@ -81,6 +248,66 @@ module.exports = function(app, db) {
         }
     });
 
+    /**
+     * @swagger
+     * /parts:
+     *   put:
+     *     summary: Update a part
+     *     description: Updates a part matching the ID, using the parameters provided.
+     *     requestBody:
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             properties:
+     *                  id:
+     *                      type: integer
+     *                      required: true
+     *                  cost:
+     *                      type: integer
+     *                      required: true
+     *                  partNumber: 
+     *                      type: string
+     *                      required: true
+     *                  description:
+     *                      type: string
+     *                      required: true
+     *                  name:
+     *                      type: string
+     *                      required: true
+     *                  notes:
+     *                      type: string
+     *                  inStock:
+     *                      type: boolean
+     *                  image:
+     *                      type: object
+     *                  isActive:
+     *                      type: boolean
+     *     responses:
+     *       200:
+     *         description: Returns a part if one exists with the specified ID.
+     *         schema:
+     *           type: object
+     *           properties:
+     *              id:
+     *                  type: integer
+     *              cost:
+     *                  type: integer
+     *              partNumber: 
+     *                  type: string
+     *              description:
+     *                  type: string
+     *              name:
+     *                  type: string
+     *              notes:
+     *                  type: string
+     *              inStock:
+     *                  type: boolean
+     *              image:
+     *                  type: object
+     *              isActive:
+     *                  type: boolean
+     */
     app.put('/parts/:id', (req, res) => {
         const id = req.params.id;
         let part = null;
@@ -93,6 +320,10 @@ module.exports = function(app, db) {
                 errors.push('No part with id \'' + id + '\' exists');
                 res.status(400).send({errors: errors});
             }
+        }
+
+        if(!req.body.name) {
+            errors.push('Name is Required');
         }
 
         if(!req.body.partNumber) {
@@ -128,6 +359,46 @@ module.exports = function(app, db) {
         }
     });
 
+    /**
+     * @swagger
+     * /parts/{id}/receive:
+     *   put:
+     *     summary: Receive a part
+     *     description: Receive a part matching the ID.
+     *     requestBody:
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             properties:
+     *                  id:
+     *                      type: integer
+     *                      required: true
+     *     responses:
+     *       200:
+     *         description: Returns the received part if one exists with the specified ID.
+     *         schema:
+     *           type: object
+     *           properties:
+     *              id:
+     *                  type: integer
+     *              cost:
+     *                  type: integer
+     *              partNumber: 
+     *                  type: string
+     *              description:
+     *                  type: string
+     *              name:
+     *                  type: string
+     *              notes:
+     *                  type: string
+     *              inStock:
+     *                  type: boolean
+     *              image:
+     *                  type: object
+     *              isActive:
+     *                  type: boolean
+     */
     app.put('/parts/:id/receive', (req, res) => {
         const id = req.params.id;
         let part = null;
@@ -168,6 +439,46 @@ module.exports = function(app, db) {
         }
     });
 
+    /**
+     * @swagger
+     * /parts/{id}/consume:
+     *   put:
+     *     summary: Consume a part
+     *     description: Consume a part matching the ID.
+     *     requestBody:
+     *       content:
+     *         application/json:
+     *           schema:
+     *             type: object
+     *             properties:
+     *                  id:
+     *                      type: integer
+     *                      required: true
+     *     responses:
+     *       200:
+     *         description: Returns the consumed part if one exists with the specified ID.
+     *         schema:
+     *           type: object
+     *           properties:
+     *              id:
+     *                  type: integer
+     *              cost:
+     *                  type: integer
+     *              partNumber: 
+     *                  type: string
+     *              description:
+     *                  type: string
+     *              name:
+     *                  type: string
+     *              notes:
+     *                  type: string
+     *              inStock:
+     *                  type: boolean
+     *              image:
+     *                  type: object
+     *              isActive:
+     *                  type: boolean
+     */
     app.put('/parts/:id/consume', (req, res) => {
         const id = req.params.id;
         let part = null;
