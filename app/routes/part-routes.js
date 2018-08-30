@@ -71,6 +71,7 @@ module.exports = function(app, db) {
                 partNumber: req.body.partNumber,
                 description: req.body.description,
                 isActive: true,
+                inStock: parseInt(req.body.inStock),
                 image: req.body.image,
                 name: req.body.name,
                 notes: req.body.notes, };
