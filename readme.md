@@ -14,23 +14,33 @@ Node.js
 
 NPM or Yarn
 
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Run Yarn install
+### Installation
+Via yarn:
 
 ```
-yarn install
+yarn install 
 ```
 
-Start the api
+Via npm:
+```
+npm install
+```
+
+### Starting the API
+
+Via yarn:
 
 ```
-yarn run dev
+yarn start
 ```
 
-The server should not be running on port 9001. You can test that it is working by opening the below URL in a browser.
+Via npm:
+
+```
+npm start
+```
+
+You should now see that the server is live and listening on port 9001. You can test that it is working by opening the below URL in a browser.
 
 ```
 http://localhost:9001/parts
