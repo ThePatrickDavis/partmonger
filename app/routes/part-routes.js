@@ -35,10 +35,10 @@ module.exports = function(app, db) {
 
     app.delete('/parts/:id', (req, res) => {
         const id = req.params.id;
-        const part = db.parts.findOne({id: Number(id)});
+        const part = db.parts.findOne({id: parseInt(id)});
         if(part) {
             const query = {
-                id: Number(id)
+                id: parseInt(id)
             };
 
             var options = {
@@ -85,7 +85,7 @@ module.exports = function(app, db) {
      *                  notes:
      *                      type: string
      *                  inStock:
-     *                      type: boolean
+     *                      type: integer
      *                  image:
      *                      type: object
      *                  isActive:
@@ -138,7 +138,7 @@ module.exports = function(app, db) {
      *              notes:
      *                  type: string
      *              inStock:
-     *                  type: boolean
+     *                  type: integer
      *              image:
      *                  type: object
      *              isActive:
@@ -146,7 +146,7 @@ module.exports = function(app, db) {
      */
     app.get('/parts/:id', (req, res) => {
         const id = req.params.id;
-        const part = db.parts.findOne({id: Number(id)});
+        const part = db.parts.findOne({id: parseInt(id)});
         if(part) {
             res.send(part);
         } else {
@@ -182,7 +182,7 @@ module.exports = function(app, db) {
      *                  notes:
      *                      type: string
      *                  inStock:
-     *                      type: boolean
+     *                      type: integer
      *                  image:
      *                      type: object
      *                  isActive:
@@ -206,7 +206,7 @@ module.exports = function(app, db) {
      *              notes:
      *                  type: string
      *              inStock:
-     *                  type: boolean
+     *                  type: integer
      *              image:
      *                  type: object
      *              isActive:
@@ -234,7 +234,7 @@ module.exports = function(app, db) {
         } else {
             const part = {
                 id: id,
-                cost: Number(req.body.cost),
+                cost: parseInt(req.body.cost),
                 partNumber: req.body.partNumber,
                 description: req.body.description,
                 isActive: true,
@@ -278,7 +278,7 @@ module.exports = function(app, db) {
      *                  notes:
      *                      type: string
      *                  inStock:
-     *                      type: boolean
+     *                      type: integer
      *                  image:
      *                      type: object
      *                  isActive:
@@ -302,7 +302,7 @@ module.exports = function(app, db) {
      *              notes:
      *                  type: string
      *              inStock:
-     *                  type: boolean
+     *                  type: integer
      *              image:
      *                  type: object
      *              isActive:
@@ -315,7 +315,7 @@ module.exports = function(app, db) {
         if(!id) {
             errors.push('Id is required.');
         }   else {
-            part = db.parts.findOne({id: Number(id)});
+            part = db.parts.findOne({id: parseInt(id)});
             if(!part) {
                 errors.push('No part with id \'' + id + '\' exists');
                 res.status(400).send({errors: errors});
@@ -351,7 +351,7 @@ module.exports = function(app, db) {
 
             part.partNumber = req.body.partNumber;
             part.description = req.body.description;
-            part.cost = Number(req.body.cost);
+            part.cost = parseInt(req.body.cost);
             part.name = req.body.name;
             part.notes = req.body.notes;
             db.parts.update(query, part, options);
@@ -393,7 +393,7 @@ module.exports = function(app, db) {
      *              notes:
      *                  type: string
      *              inStock:
-     *                  type: boolean
+     *                  type: integer
      *              image:
      *                  type: object
      *              isActive:
@@ -407,7 +407,7 @@ module.exports = function(app, db) {
         if(!id) {
             errors.push('Id is required.');
         }   else {
-            part = db.parts.findOne({id: Number(id)});
+            part = db.parts.findOne({id: parseInt(id)});
             if(!part) {
                 errors.push('No part with id \'' + id + '\' exists');
                 res.status(400).send({errors: errors});
@@ -417,14 +417,14 @@ module.exports = function(app, db) {
         if(!req.body.quantity) {
             errors.push('Quantity Is Required');
         } else {
-            newStock = part.inStock + Number(req.body.quantity);
+            newStock = part.inStock + parseInt(req.body.quantity);
         }
 
         if(errors.length > 0) {
             res.status(400).send({errors: errors});
         } else {
             const query = {
-                id: Number(id)
+                id: parseInt(id)
             };
 
             var options = {
@@ -473,7 +473,7 @@ module.exports = function(app, db) {
      *              notes:
      *                  type: string
      *              inStock:
-     *                  type: boolean
+     *                  type: integer
      *              image:
      *                  type: object
      *              isActive:
@@ -487,7 +487,7 @@ module.exports = function(app, db) {
         if(!id) {
             errors.push('Id is required.');
         }   else {
-            part = db.parts.findOne({id: Number(id)});
+            part = db.parts.findOne({id: parseInt(id)});
             if(!part) {
                 errors.push('No part with id \'' + id + '\' exists');
                 res.status(400).send({errors: errors});
@@ -497,14 +497,14 @@ module.exports = function(app, db) {
         if(!req.body.quantity) {
             errors.push('Quantity Is Required');
         } else {
-            newStock = part.inStock - Number(req.body.quantity);
+            newStock = part.inStock - parseInt(req.body.quantity);
         }
 
         if(errors.length > 0) {
             res.status(400).send({errors: errors});
         } else {
             const query = {
-                id: Number(id)
+                id: parseInt(id)
             };
 
             var options = {
